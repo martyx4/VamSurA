@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
     public float damage;
     public int per;
 
-    public void Init(float damage, int per)//�ʱ�ȭ
+    public void Init(float damage, int per)//초기화
     {
         this.damage = damage;
         this.per = per;

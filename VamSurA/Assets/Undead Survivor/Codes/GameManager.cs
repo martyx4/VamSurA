@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance; //Á¤Àû ¿ä¼Ò, ¹Ù·Î ¸Ş¸ğ¸®¿¡ ¾ñ´Â´Ù, À¯´ÏÆ¼¿¡ ³ªÅ¸³ªÁö ¾Ê´Â´Ù, ´Ù¸¥ ÄÚµå¿¡¼­ ¹Ù·Î ºÒ·¯¿Ã ¼ö ÀÖ´Ù.
+    public static GameManager instance; //ì •ì  ìš”ì†Œ, ë°”ë¡œ ë©”ëª¨ë¦¬ì— ì–¹ëŠ”ë‹¤, ìœ ë‹ˆí‹°ì— ë‚˜íƒ€ë‚˜ì§€ ì•ŠëŠ”ë‹¤, ë‹¤ë¥¸ ì½”ë“œì—ì„œ ë°”ë¡œ ë¶ˆëŸ¬ì˜¬ ìˆ˜ ìˆë‹¤.
 
-    public float gameTime;//ÀÎ°ÔÀÓ ½Ç½Ã°£À» ÀúÀå
-    public float maxGameTime = 2 * 10f;//ÃÖ´ë ½Ã°£(¾ÕÀÚ¸® ¼ıÀÚ) * (¸î ÃÊ) ex 5ºĞ: 5 * 60f, 20ÃÊ: 2 * 10f
+    public float gameTime;//ì¸ê²Œì„ ì‹¤ì‹œê°„ì„ ì €ì¥
+    public float maxGameTime = 2 * 10f;//ìµœëŒ€ ì‹œê°„(ì•ìë¦¬ ìˆ«ì) * (ëª‡ ì´ˆ) ex 5ë¶„: 5 * 60f, 20ì´ˆ: 2 * 10f
 
     public PoolManager pool;
     public Player player;

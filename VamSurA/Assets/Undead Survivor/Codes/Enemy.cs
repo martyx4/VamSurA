@@ -8,9 +8,9 @@ public class Enemy : MonoBehaviour
     public float health;
     public float maxHealth;
     public RuntimeAnimatorController[] animCon;
-    public Rigidbody2D target; //ÇÃ·¹ÀÌ¾î À§Ä¡
+    public Rigidbody2D target; //í”Œë ˆì´ì–´ ìœ„ì¹˜
 
-    bool isLive; //»ì¾ÆÀÖ´ÂÁö
+    bool isLive; //ì‚´ì•„ìˆëŠ”ì§€
 
     Rigidbody2D rigid;
     Animator anim;
@@ -28,10 +28,10 @@ public class Enemy : MonoBehaviour
         if (!isLive)
             return;
 
-        Vector2 dirVec = target.position - rigid.position;//¸ó½ºÅÍ°¡ ÇÃ·¹ÀÌ¾î¿¡°Ô ÇâÇÏ´Â ¹æÇâ
+        Vector2 dirVec = target.position - rigid.position;//ëª¬ìŠ¤í„°ê°€ í”Œë ˆì´ì–´ì—ê²Œ í–¥í•˜ëŠ” ë°©í–¥
         Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
-        rigid.velocity = Vector2.zero;//¸ó½ºÅÍ¿Í ÇÃ·¹ÀÌ¾î Ãæµ¹ ½Ã º“°ÜÁ® ³ª°¡´Â »óÈ² ¹æÁö
+        rigid.velocity = Vector2.zero;//ëª¬ìŠ¤í„°ì™€ í”Œë ˆì´ì–´ ì¶©ëŒ ì‹œ í‹©ê²¨ì ¸ ë‚˜ê°€ëŠ” ìƒí™© ë°©ì§€
     }
 
     void LateUpdate()
@@ -39,19 +39,19 @@ public class Enemy : MonoBehaviour
         if (!isLive)
             return;
 
-        spriter.flipX = target.position.x < rigid.position.x; //°¢ ¸ó½ºÅÍ ÀÚ½ÅÀÇ »óÈ²¿¡ ¸ÂÃß¾î ÇÃ·¹ÀÌ¾î ¹Ù¶óº¸±â
+        spriter.flipX = target.position.x < rigid.position.x; //ê° ëª¬ìŠ¤í„° ìì‹ ì˜ ìƒí™©ì— ë§ì¶”ì–´ í”Œë ˆì´ì–´ ë°”ë¼ë³´ê¸°
     }
 
-    void OnEnable()//½ºÅ©¸³Æ® È°¼ºÈ­ ší È£ÃâµÇ´Â ÇÔ¼ö
+    void OnEnable()//ìŠ¤í¬ë¦½íŠ¸ í™œì„±í™” ì‹´ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     {
-        target = GameManager.instance.player.GetComponent<Rigidbody2D>();//Å¸°Ù ÃÊ±âÈ­
+        target = GameManager.instance.player.GetComponent<Rigidbody2D>();//íƒ€ê²Ÿ ì´ˆê¸°í™”
         isLive = true;
-        health = maxHealth;//Àû ºÎÈ° ½Ã Ã¼·Â Àç¼³Á¤
+        health = maxHealth;//ì  ë¶€í™œ ì‹œ ì²´ë ¥ ì¬ì„¤ì •
     }
 
     public void Init(SpawnData data)
     {
-        anim.runtimeAnimatorController = animCon[data.spriteType];//¾Ö´Ï¸ŞÀÌ¼ÇÀº ½ºÆù µ¥ÀÌÅÍ¿¡ ÁöÁ¤µÈ ¹øÈ£ÀÇ ÀûÀÇ ¾Ö´Ï¸ŞÀÌ¼ÇÀ¸·Î ÁöÁ¤ÇÑ´Ù.
+        anim.runtimeAnimatorController = animCon[data.spriteType];//ì• ë‹ˆë©”ì´ì…˜ì€ ìŠ¤í° ë°ì´í„°ì— ì§€ì •ëœ ë²ˆí˜¸ì˜ ì ì˜ ì• ë‹ˆë©”ì´ì…˜ìœ¼ë¡œ ì§€ì •í•œë‹¤.
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour
 
     /*void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Bullet"))//Ãæµ¹ ½Ã ´©±ºÁö °Ë»ç
+        if (!collision.CompareTag("Bullet"))//ì¶©ëŒ ì‹œ ëˆ„êµ°ì§€ ê²€ì‚¬
             return;
 
         collision.GetComponent<Bullet>().damage
