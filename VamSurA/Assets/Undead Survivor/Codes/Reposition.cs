@@ -13,26 +13,26 @@ public class Reposition : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Area")) //Area ÅÂ±×°¡ ¾Æ´Ï¶ó¸é(!) ½ÇÇà ¾ÈÇÔ(return)
+        if (!collision.CompareTag("Area")) //Area íƒœê·¸ê°€ ì•„ë‹ˆë¼ë©´(!) ì‹¤í–‰ ì•ˆí•¨(return)
             return;
         
         Vector3 playerPos = GameManager.instance.player.transform.position;
         Vector3 myPos = transform.position;
-        float diffX = Mathf.Abs(playerPos.x - myPos.x);//°Å¸® ±¸ÇÏ±â, Abs: Àı´ñ°ª(À½¼ö ¹æÁö)
+        float diffX = Mathf.Abs(playerPos.x - myPos.x);//ê±°ë¦¬ êµ¬í•˜ê¸°, Abs: ì ˆëŒ“ê°’(ìŒìˆ˜ ë°©ì§€)
         float diffY = Mathf.Abs(playerPos.y - myPos.y);
 
         Vector3 playerDir = GameManager.instance.player.inputVec;
-        float dirX = playerDir.x < 0 ? -1 : 1; //Á¶°ÇÀÌ ¾î¶² »óÅÂ¶ó¸é? (Âü ½Ã ÁÖ´Â °ª : °ÅÁş ½Ã ÁÖ´Â °ª)
+        float dirX = playerDir.x < 0 ? -1 : 1; //ì¡°ê±´ì´ ì–´ë–¤ ìƒíƒœë¼ë©´? (ì°¸ ì‹œ ì£¼ëŠ” ê°’ : ê±°ì§“ ì‹œ ì£¼ëŠ” ê°’)
         float dirY = playerDir.y < 0 ? -1 : 1;
 
-        switch (transform.tag) //ÅÂ±×°¡ ¾î¶² »óÅÂÀÎÁö(ÅÂ±×°¡ ¹ºÁö)
+        switch (transform.tag) //íƒœê·¸ê°€ ì–´ë–¤ ìƒíƒœì¸ì§€(íƒœê·¸ê°€ ë­”ì§€)
         {
             case "Ground":
-                if (diffX > diffY)// XÃà °Å¸®Â÷ÀÌ°¡ YÃà °Å¸®Â÷ÀÌº¸´Ù Å©´Ù
+                if (diffX > diffY)// Xì¶• ê±°ë¦¬ì°¨ì´ê°€ Yì¶• ê±°ë¦¬ì°¨ì´ë³´ë‹¤ í¬ë‹¤
                 {
-                    transform.Translate(Vector3.right * dirX * 40);//ÁöÁ¤µÈ °ª ¸¸Å­ ÇöÀçÀ§Ä¡¿¡¼­ ÀÌµ¿, ÀÌµ¿·® ´ëÀÔ
+                    transform.Translate(Vector3.right * dirX * 40);//ì§€ì •ëœ ê°’ ë§Œí¼ í˜„ì¬ìœ„ì¹˜ì—ì„œ ì´ë™, ì´ë™ëŸ‰ ëŒ€ì…
                 }
-                else if (diffX < diffY)// YÃà °Å¸®Â÷ÀÌ°¡ XÃà °Å¸®Â÷ÀÌº¸´Ù Å©´Ù
+                else if (diffX < diffY)// Yì¶• ê±°ë¦¬ì°¨ì´ê°€ Xì¶• ê±°ë¦¬ì°¨ì´ë³´ë‹¤ í¬ë‹¤
                 {
                     transform.Translate(Vector3.up * dirY * 40);
                 }
@@ -41,7 +41,7 @@ public class Reposition : MonoBehaviour
             case "Enemy":
                 if (coll.enabled)
                 {
-                    transform.Translate(playerDir * 20 + new Vector3(Random.Range(-1f, 1f), Random.Range(-3f, 3f), 0f));//ÇÃ·¹ÀÌ¾î ¸ÂÀºÆí¿¡¼­ µîÀå
+                    transform.Translate(playerDir * 20 + new Vector3(Random.Range(-1f, 1f), Random.Range(-3f, 3f), 0f));//í”Œë ˆì´ì–´ ë§ì€í¸ì—ì„œ ë“±ì¥
                 }
                 break;
         }

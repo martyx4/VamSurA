@@ -17,8 +17,8 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;//ÇÁ·¹ÀÓ¸¶´Ù ½Ã°£ ´õÇÏ±â
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f), spawnData.Length - 1); //½Ã°£¿¡ ¸ÂÃß¾î ·¹º§ÀÌ ¿Ã¶ó°¨, FloorToInt: Á¤¼ö º¯È¯ ½Ã ¹ö¸²ÀÇ Çü½ÄÀ» ÃëÇÔ, CeilToInt: Á¤¼ö º¯È¯ ½Ã ¿Ã¸²ÀÇ Çü½ÄÀ» ÃëÇÔ
+        timer += Time.deltaTime;//í”„ë ˆì„ë§ˆë‹¤ ì‹œê°„ ë”í•˜ê¸°
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f), spawnData.Length - 1); //ì‹œê°„ì— ë§ì¶”ì–´ ë ˆë²¨ì´ ì˜¬ë¼ê°, FloorToInt: ì •ìˆ˜ ë³€í™˜ ì‹œ ë²„ë¦¼ì˜ í˜•ì‹ì„ ì·¨í•¨, CeilToInt: ì •ìˆ˜ ë³€í™˜ ì‹œ ì˜¬ë¦¼ì˜ í˜•ì‹ì„ ì·¨í•¨
 
         if (timer > spawnData[level].spawnTime)
         {
@@ -30,17 +30,17 @@ public class Spawner : MonoBehaviour
     void Spawn()
     {
         GameObject enemy = GameManager.instance.pool.Get(0);
-        enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;//Àû À§Ä¡ ½ºÆùÆ÷ÀÎÆ®·Î ÁöÁ¤
+        enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;//ì  ìœ„ì¹˜ ìŠ¤í°í¬ì¸íŠ¸ë¡œ ì§€ì •
         enemy.GetComponent<Enemy>().Init(spawnData[level]);
     }
 }
 
-//Á÷·ÄÈ­(Serialization): °³Ã¼¸¦ ÀúÀå È¤Àº Àü¼ÛÇÏ±â À§ÇØ º¯È¯, ¿©±â¼± À¯´ÏÆ¼ ÀÎ½ºÆåÅÍ¿¡ SpawnData¸¦ Ç¥½ÃÇÏ±âÀ§ÇØ »ç¿ë
-[System.Serializable]//¸®½ºÆ®¿Í ¼Ó¼º Áß ¼Ó¼ºÀ» ¶æÇÏ´Â ´ë°ıÈ£
-public class SpawnData //°¢ Àû »çÀü ¼³Á¤, ÀÎ½ºÆåÅÍ¿¡¼­ °¢ ÀûÀ» µû·Î ¼³Á¤ÇÒ ¼ö ÀÖÀ½
+//ì§ë ¬í™”(Serialization): ê°œì²´ë¥¼ ì €ì¥ í˜¹ì€ ì „ì†¡í•˜ê¸° ìœ„í•´ ë³€í™˜, ì—¬ê¸°ì„  ìœ ë‹ˆí‹° ì¸ìŠ¤í™í„°ì— SpawnDataë¥¼ í‘œì‹œí•˜ê¸°ìœ„í•´ ì‚¬ìš©
+[System.Serializable]//ë¦¬ìŠ¤íŠ¸ì™€ ì†ì„± ì¤‘ ì†ì„±ì„ ëœ»í•˜ëŠ” ëŒ€ê´„í˜¸
+public class SpawnData //ê° ì  ì‚¬ì „ ì„¤ì •, ì¸ìŠ¤í™í„°ì—ì„œ ê° ì ì„ ë”°ë¡œ ì„¤ì •í•  ìˆ˜ ìˆìŒ
 {
-    public float spawnTime;//Àû »ı¼ºÁÖ±â
-    public int spriteType;//Àû Á¾·ù(Á»ºñ, ÇØ°ñ µî)
-    public int health;//Àû Ã¼·Â
-    public float speed;//Àû ¼Óµµ
+    public float spawnTime;//ì  ìƒì„±ì£¼ê¸°
+    public int spriteType;//ì  ì¢…ë¥˜(ì¢€ë¹„, í•´ê³¨ ë“±)
+    public int health;//ì  ì²´ë ¥
+    public float speed;//ì  ì†ë„
 }
