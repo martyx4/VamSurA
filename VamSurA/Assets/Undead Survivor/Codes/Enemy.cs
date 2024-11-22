@@ -8,30 +8,34 @@ public class Enemy : MonoBehaviour
     public float health;
     public float maxHealth;
     public RuntimeAnimatorController[] animCon;
-    public Rigidbody2D target; //í”Œë ˆì´ì–´ ìœ„ì¹˜
+    public Rigidbody2D target; //ÇÃ·¹ÀÌ¾î À§Ä¡
 
-    bool isLive; //ì‚´ì•„ìˆëŠ”ì§€
+    bool isLive; //»ì¾ÆÀÖ´ÂÁö
 
     Rigidbody2D rigid;
+    Collider2D coll;
     Animator anim;
     SpriteRenderer spriter;
+    WaitForFixedUpdate wait;
     
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
+        wait = new WaitForFixedUpdate();
     }
 
     void FixedUpdate()
     {
-        if (!isLive)
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
 
-        Vector2 dirVec = target.position - rigid.position;//ëª¬ìŠ¤í„°ê°€ í”Œë ˆì´ì–´ì—ê²Œ í–¥í•˜ëŠ” ë°©í–¥
+        Vector2 dirVec = target.position - rigid.position;//¸ó½ºÅÍ°¡ ÇÃ·¹ÀÌ¾î¿¡°Ô ÇâÇÏ´Â ¹æÇâ
         Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
-        rigid.velocity = Vector2.zero;//ëª¬ìŠ¤í„°ì™€ í”Œë ˆì´ì–´ ì¶©ëŒ ì‹œ í‹©ê²¨ì ¸ ë‚˜ê°€ëŠ” ìƒí™© ë°©ì§€
+        rigid.velocity = Vector2.zero;//¸ó½ºÅÍ¿Í ÇÃ·¹ÀÌ¾î Ãæµ¹ ½Ã º“°ÜÁ® ³ª°¡´Â »óÈ² ¹æÁö
     }
 
     void LateUpdate()
@@ -39,29 +43,60 @@ public class Enemy : MonoBehaviour
         if (!isLive)
             return;
 
-        spriter.flipX = target.position.x < rigid.position.x; //ê° ëª¬ìŠ¤í„° ìì‹ ì˜ ìƒí™©ì— ë§ì¶”ì–´ í”Œë ˆì´ì–´ ë°”ë¼ë³´ê¸°
+        spriter.flipX = target.position.x < rigid.position.x; //°¢ ¸ó½ºÅÍ ÀÚ½ÅÀÇ »óÈ²¿¡ ¸ÂÃß¾î ÇÃ·¹ÀÌ¾î ¹Ù¶óº¸±â
     }
 
-    void OnEnable()//ìŠ¤í¬ë¦½íŠ¸ í™œì„±í™” ì‹´ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
+    void OnEnable()//½ºÅ©¸³Æ® È°¼ºÈ­ ší È£ÃâµÇ´Â ÇÔ¼ö
     {
-        target = GameManager.instance.player.GetComponent<Rigidbody2D>();//íƒ€ê²Ÿ ì´ˆê¸°í™”
+        target = GameManager.instance.player.GetComponent<Rigidbody2D>();//Å¸°Ù ÃÊ±âÈ­
         isLive = true;
-        health = maxHealth;//ì  ë¶€í™œ ì‹œ ì²´ë ¥ ì¬ì„¤ì •
+        coll.enabled = true;
+        rigid.simulated = true;
+        spriter.sortingOrder = 2;
+        anim.SetBool("Dead", false);
+        health = maxHealth;//Àû ºÎÈ° ½Ã Ã¼·Â Àç¼³Á¤
     }
 
     public void Init(SpawnData data)
     {
-        anim.runtimeAnimatorController = animCon[data.spriteType];//ì• ë‹ˆë©”ì´ì…˜ì€ ìŠ¤í° ë°ì´í„°ì— ì§€ì •ëœ ë²ˆí˜¸ì˜ ì ì˜ ì• ë‹ˆë©”ì´ì…˜ìœ¼ë¡œ ì§€ì •í•œë‹¤.
+        anim.runtimeAnimatorController = animCon[data.spriteType];//¾Ö´Ï¸ŞÀÌ¼ÇÀº ½ºÆù µ¥ÀÌÅÍ¿¡ ÁöÁ¤µÈ ¹øÈ£ÀÇ ÀûÀÇ ¾Ö´Ï¸ŞÀÌ¼ÇÀ¸·Î ÁöÁ¤ÇÑ´Ù.
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
     }
 
-    /*void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Bullet"))//ì¶©ëŒ ì‹œ ëˆ„êµ°ì§€ ê²€ì‚¬
+        if (!collision.CompareTag("Bullet") || !isLive)//Ãæµ¹ ½Ã ´©±ºÁö °Ë»ç
             return;
 
-        collision.GetComponent<Bullet>().damage
-    }*/
+        health -= collision.GetComponent<Bullet>().damage;
+        StartCoroutine(KnockBack());
+
+        if (health > 0){
+            anim.SetTrigger("Hit");
+        }
+        else {
+            isLive = false;
+            coll.enabled = false;
+            rigid.simulated = false;
+            spriter.sortingOrder = 1;
+            anim.SetBool("Dead", true);
+            GameManager.instance.kill++;
+            GameManager.instance.GetExp();
+        }
+    }
+
+    IEnumerator KnockBack()
+    {
+        yield return wait;
+        Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 dirVec = transform.position - playerPos;
+        rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
+    }
 }

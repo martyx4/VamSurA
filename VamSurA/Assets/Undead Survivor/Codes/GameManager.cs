@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance; //ì •ì  ìš”ì†Œ, ë°”ë¡œ ë©”ëª¨ë¦¬ì— ì–¹ëŠ”ë‹¤, ìœ ë‹ˆí‹°ì— ë‚˜íƒ€ë‚˜ì§€ ì•ŠëŠ”ë‹¤, ë‹¤ë¥¸ ì½”ë“œì—ì„œ ë°”ë¡œ ë¶ˆëŸ¬ì˜¬ ìˆ˜ ìžˆë‹¤.
-
-    public float gameTime;//ì¸ê²Œìž„ ì‹¤ì‹œê°„ì„ ì €ìž¥
-    public float maxGameTime = 2 * 10f;//ìµœëŒ€ ì‹œê°„(ì•žìžë¦¬ ìˆ«ìž) * (ëª‡ ì´ˆ) ex 5ë¶„: 5 * 60f, 20ì´ˆ: 2 * 10f
-
+    public static GameManager instance; //Á¤Àû ¿ä¼Ò, ¹Ù·Î ¸Þ¸ð¸®¿¡ ¾ñ´Â´Ù, À¯´ÏÆ¼¿¡ ³ªÅ¸³ªÁö ¾Ê´Â´Ù, ´Ù¸¥ ÄÚµå¿¡¼­ ¹Ù·Î ºÒ·¯¿Ã ¼ö ÀÖ´Ù.
+    [Header("# Game Control")]
+    public float gameTime;//ÀÎ°ÔÀÓ ½Ç½Ã°£À» ÀúÀå
+    public float maxGameTime = 2 * 10f;//ÃÖ´ë ½Ã°£(¾ÕÀÚ¸® ¼ýÀÚ) * (¸î ÃÊ) ex 5ºÐ: 5 * 60f, 20ÃÊ: 2 * 10f
+    [Header("# Player Info")]
+    public int health;
+    public int maxHealth = 100;
+    public int level;
+    public int kill;
+    public int exp;
+    public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
+    [Header("# Game Object")]
     public PoolManager pool;
     public Player player;
     
@@ -17,6 +24,11 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
+
+    void Start()
+    {
+        health = maxHealth;
+    }
     void Update()
     {
         gameTime += Time.deltaTime;
@@ -24,6 +36,17 @@ public class GameManager : MonoBehaviour
         if (gameTime > maxGameTime)
         {
             gameTime = maxGameTime;
+        }
+    }
+
+    public void GetExp()
+    {
+        exp++;
+
+        if (exp == nextExp[level]) {
+            level++;
+            exp = 0;
+
         }
     }
 }
