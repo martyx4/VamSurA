@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     public Vector2 inputVec; //Vector2: 변수 타입, X와 Y를 가짐
     public float speed;
+    public Scanner scanner;
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>(); //오브젝트에서 함수를 가져와 정의(초기화), <가져올 컴포넌트 이름>
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
     }
 
     //Update : 하나의 프레임마다 한번씩 호출되는 생명주기 함수

@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     bool isLive; //살아있는지
 
     Rigidbody2D rigid;
+    Collider2D coll;
     Animator anim;
     SpriteRenderer spriter;
     WaitForFixedUpdate wait;
@@ -20,6 +21,7 @@ public class Enemy : MonoBehaviour
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
         wait = new WaitForFixedUpdate();
@@ -27,7 +29,7 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isLive)
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
 
         Vector2 dirVec = target.position - rigid.position;//몬스터가 플레이어에게 향하는 방향
@@ -48,6 +50,10 @@ public class Enemy : MonoBehaviour
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();//타겟 초기화
         isLive = true;
+        coll.enabled = true;
+        rigid.simulated = true;
+        spriter.sortingOrder = 2;
+        anim.SetBool("Dead", false);
         health = maxHealth;//적 부활 시 체력 재설정
     }
 
@@ -65,12 +71,17 @@ public class Enemy : MonoBehaviour
             return;
 
         health -= collision.GetComponent<Bullet>().damage;
+        StartCoroutine(KnockBack());
 
         if (health > 0){
             anim.SetTrigger("Hit");
         }
         else {
-
+            isLive = false;
+            coll.enabled = false;
+            rigid.simulated = false;
+            spriter.sortingOrder = 1;
+            anim.SetBool("Dead", true);
             Dead();
         }
     }
